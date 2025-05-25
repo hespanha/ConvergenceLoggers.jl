@@ -1,7 +1,7 @@
 name = "ConvergenceLoggers"
 uuid = "c6951c0e-398c-11f0-2c23-0d5eb665e95e"
 authors = ["Joao Hespanha <hespanha@ece.ucsb.edu>"]
-version = "1.0.0"
+version = "1.0.1"
 
 [deps]
 ElasticArrays = "fdbdab4c-e67f-52f5-8c3f-e7b388dad3d4"
