@@ -112,7 +112,7 @@ function plotLogger!(
     kwargs...
 ) where {T,D}
     for i in eachindex(logger)
-        plotLogger!(plt, i, logger[i], kwargs...)
+        plotLogger!(plt, i, logger[i]; kwargs...)
     end
     return nothing
 end
@@ -123,15 +123,16 @@ function plotLogger!(
     kwargs...
 ) where {T,D}
     for i in eachindex(subplots, logger)
-        plotLogger!(plt, subplots[i], logger[i], kwargs...)
+        plotLogger!(plt, subplots[i], logger[i]; kwargs...)
     end
     return nothing
 end
 function plotLogger!(
     plt::Union{Plots.Plot,Plots.Subplot},
-    logger::TimeSeriesLogger{T,D}
+    logger::TimeSeriesLogger{T,D};
+    kwargs...
 ) where {T,D}
-    return plotLogger!(plt, 1, logger)
+    return plotLogger!(plt, 1, logger; kwargs...)
 end
 
 """
@@ -224,9 +225,10 @@ Plot one logger in a new plot.
 + `logger::TimeSeriesLogger{T,D}`: logger to plot
 """
 function plotLogger(
-    logger::TimeSeriesLogger{T,D}
+    logger::TimeSeriesLogger{T,D};
+    kwargs...
 ) where {T,D}
-    return plotLogger!(Plots.plot(), 1, logger)
+    return plotLogger!(Plots.plot(), 1, logger; kwargs...)
 end
 
 """Subsample logger times to the desired number of points."""
