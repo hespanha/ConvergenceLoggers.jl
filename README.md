@@ -87,7 +87,10 @@ clog = TimeSeriesLogger{Int,Float64}( # Int time stamps and Float64 values
 
 # create plot 
 using Plots
-plts=Plots.plot(size=[800,400])
+plts=Plots.plot(size=[400,200])
+# small fonts will look better
+Plots.default(legendfontsize=6, labelfontsize=6, 
+              guidefontsize=6, tickfontsize=6) 
 
 # main loop
 tNextPlot=time()
@@ -137,7 +140,7 @@ clogs = [
     # second logger
     TimeSeriesLogger{Int,Float64}( # Int time stamps and Float64 values
     2;
-    legend=["reward for player 1", "reward for player 2"], 
+    legend=["player 1", "player 2"], 
     yaxis=:log10, 
     xlabel="episode number",
     ylabel="RL",
@@ -146,7 +149,11 @@ clogs = [
 
 # create plot with 2 subplots 
 using Plots
-plts=Plots.plot(layout=@layout[a b],size=[800,400], margin=15Plots.pt)
+plts=Plots.plot(layout=@layout[a b],size=[600,200], margin=15Plots.pt)
+# small fonts will look better
+# small fonts will look better
+Plots.default(legendfontsize=6, labelfontsize=6, 
+              guidefontsize=6, tickfontsize=6) 
 
 # main loop
 tNextPlot=time()
