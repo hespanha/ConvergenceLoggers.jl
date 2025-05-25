@@ -5,10 +5,9 @@ arising, e.g., in the training of Neural Networks, Reinforcement Learning, etc.
 
 ## Usage
 
-
 ### Basic use
 
-To gather data, we start by creating a `TimeSeriesLogger` object, where the data to be
+To gather data, we start by creating a `TimeSeriesLogger` structure, where the data to be
 logger is stored.
 
 ```julia
@@ -32,22 +31,23 @@ This creates a single logger that
 
 For more options check
 
-```julia
+```
 ?TimeSeriesLogger
 ```
 
 Data is stored into the logger with the `append!` command. Typically, this takes place in a loop:
 
 ```julia
-for t in 1:1000
-    data=(2 * rand(3) .+ [1.0, 5, 10]) ./ t
-    append!(clog, t, data)
+for iteration in 1:1000
+    data=(2 * rand(3) .+ [1.0, 5, 10]) ./ iteration
+    append!(clog, iteration, data)
 end
 ```
 
 The logged data can be visualized using `plotLogger`:
 
 ```julia
+using Plots
 plt=plotLogger(clog)
 display(plt)
 savefig("figures/example1.png") # only needed if you want to save the figure
@@ -63,11 +63,54 @@ savefig("figures/example1.png") # only needed if you want to save the figure
 > uses a *shaded area* to show the full range of values in the logger and a *solid line* to show the average.
 > This typically looks much nicer (and is much faster) than trying to plot thousands-millions of points.
 
+### Logging multiple runs
+
+One `TimeSeriesLogger` structure can be used to gather data across multiple runs of the same
+iterative algorithm, in which case it will show 
+  1. average across runs
+  2. range of values across runs
+
+This does not really require any significant change to the code we saw above; we just keep adding
+data to the same log:
+
+```julia
+begin
+using ConvergenceLoggers
+
+# create one logger
+clog = TimeSeriesLogger{Int,Float64}( # Int time stamps and Float64 values
+    3;   # number of variables to log
+    legend= ["top", "middle", "bottom"], 
+    yaxis=:log10, 
+    xlabel="episode number",
+    ylabel="",
+    )
+
+# loop over multiple runs of the algorithm
+for run in 1:10
+    # each run has many iterations (not necessarily of the same length)
+    for iteration in 1:rand(900:1100)
+        data=(2 * rand(3) .+ [1.0, 5, 10]) ./ iteration
+        append!(clog, iteration, data)
+    end
+end
+
+# see the multi-run logger
+plt=plotLogger(clog, colors=:viridis) # just for fun, we now use a different colormap
+display(plt)
+savefig("figures/example_multiruns.png") # only needed if you want to save the figure
+end
+```
+
+![example_multiruns](figures/example_multiruns.png)
+
+
+
 ### Iterative plots
 
 Often one wants to see progress as the iteration converges.
 
-In such cases, to minimize overhead one should create a `Plots.plot` object before the loop starts
+In such cases, to minimize overhead one should create a `Plots.plot` structure before the loop starts
 and then use `plotLogger!` inside the loop, which updates the time series of an existing plot,
 rather than recreating the plot at each iteration. 
 
@@ -75,8 +118,9 @@ The following code shows a typically use of `ConvergenceLoggers` within a loop:
 
 ```julia
 begin
-# create logger
 using ConvergenceLoggers
+
+# create logger
 clog = TimeSeriesLogger{Int,Float64}( # Int time stamps and Float64 values
     3;   # number of variables to log
     legend= ["top", "middle", "bottom"], 
@@ -107,11 +151,11 @@ anim= @animate for t in 1:500
         tNextPlot=time()+2 # update plot every 2 seconds & at end
     end
 end
-gif(anim,"figures/example2.gif",fps=30)
+gif(anim,"figures/example_iterative.gif",fps=30)
 end
 ```
 
-![example2](figures/example2.gif)
+![example_iterative](figures/example_iterative.gif)
 
 > [!Tip]
 > 
@@ -126,8 +170,9 @@ The following code shows how this would be done within a loop:
 
 ```julia
 begin
-# create logger
 using ConvergenceLoggers
+
+# create logger
 clogs = [
     # first logger
     TimeSeriesLogger{Int,Float64}( # Int time stamps and Float64 values
@@ -172,8 +217,8 @@ anim= @animate for t in 1:500
         tNextPlot=time()+2 # update plot every 2 seconds & at end
     end
 end
-gif(anim,"figures/example3.gif",fps=30)
+gif(anim,"figures/example_multiloggers.gif",fps=30)
 end
 ```
 
-![example3](figures/example3.gif)
+![example_multiloggers](figures/example_multiloggers.gif)
