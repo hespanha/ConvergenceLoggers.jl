@@ -9,8 +9,8 @@ test/data/*.jld2
 old/
 
 # pictures
-*.gif
-*.png
+# *.gif
+# *.png
 
 # numpy files
 *.npz
