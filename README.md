@@ -50,10 +50,10 @@ The logged data can be visualized using `plotLogger`:
 using Plots
 plt=plotLogger(clog)
 display(plt)
-savefig("figures/example1.png") # only needed if you want to save the figure
+savefig("figures/example_simple.png") # only needed if you want to save the figure
 ```
 
-![example1](figures/example1.png)
+![example_simple](figures/example_simple.png)
 
 > [!Tip]
 > plotLogger! will limit the number of points displayed (by default to 200, but this can be changed
