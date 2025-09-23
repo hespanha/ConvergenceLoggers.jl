@@ -21,7 +21,8 @@ clog = TimeSeriesLogger{Int,Float64}( # Int time stamps and Float64 values
     )
 ```
 
-This creates a single logger that 
+This creates a single logger that
+
 + stores 3 variables, each of type `Float64`
 + each sample of the 5 variables is time-stamped with an `Int`
 + in plots:
@@ -31,7 +32,7 @@ This creates a single logger that
 
 For more options check
 
-```
+```julia
 ?TimeSeriesLogger
 ```
 
@@ -66,7 +67,8 @@ savefig("figures/example_simple.png") # only needed if you want to save the figu
 ### Logging multiple runs
 
 One `TimeSeriesLogger` structure can be used to gather data across multiple runs of the same
-iterative algorithm, in which case it will show 
+iterative algorithm, in which case it will show
+
   1. average across runs
   2. range of values across runs
 
@@ -131,7 +133,7 @@ clog = TimeSeriesLogger{Int,Float64}( # Int time stamps and Float64 values
 
 # create plot 
 using Plots
-plts=Plots.plot(size=[400,200])
+plots=Plots.plot(size=[400,200])
 # small fonts will look better
 Plots.default(legendfontsize=6, labelfontsize=6, 
               guidefontsize=6, tickfontsize=6) 
@@ -146,8 +148,8 @@ anim= @animate for t in 1:500
     append!(clog, t, data)
 
     if time()>=tNextPlot || t==500 
-        plotLogger!(plts, clog)
-        display(plts)
+        plotLogger!(plots, clog)
+        display(plots)
         tNextPlot=time()+2 # update plot every 2 seconds & at end
     end
 end
@@ -158,7 +160,7 @@ end
 ![example_iterative](figures/example_iterative.gif)
 
 > [!Tip]
-> 
+>
 > Creating an animation is obviously not needed, but good to show how it looks.
 
 ### Multiple loggers
@@ -194,7 +196,7 @@ clogs = [
 
 # create plot with 2 subplots 
 using Plots
-plts=Plots.plot(layout=@layout[a b],size=[600,200], margin=15Plots.pt)
+plots=Plots.plot(layout=@layout[a b],size=[600,200], margin=15Plots.pt)
 # small fonts will look better
 # small fonts will look better
 Plots.default(legendfontsize=6, labelfontsize=6, 
@@ -212,8 +214,8 @@ anim= @animate for t in 1:500
     append!(clogs[2], t, rewards)
 
     if time()>=tNextPlot || t==500 
-        plotLogger!(plts, clogs)
-        display(plts)
+        plotLogger!(plots, clogs)
+        display(plots)
         tNextPlot=time()+2 # update plot every 2 seconds & at end
     end
 end
