@@ -49,14 +49,14 @@ end
     @test size(clog.data) == (5, 2)
 
     l = @layout [a b]
-    plts = plot(layout=l)
-    @time plotLogger!(plts, 1, clog)
-    @time plotLogger!(plts, 2, clog, colors=:temperaturemap)
+    plots = plot(layout=l)
+    @time plotLogger!(plots, 1, clog)
+    @time plotLogger!(plots, 2, clog, colors=:temperaturemap)
     for k in 1:4
         append!(clog, 4 + k, (-1) .^ k .* Float64[1, 3, 4, 5, 6])
-        @time plotLogger!(plts, 1, clog)
-        @time plotLogger!(plts, 2, clog, colors=:temperaturemap)
-        display(plts)
+        @time plotLogger!(plots, 1, clog)
+        @time plotLogger!(plots, 2, clog, colors=:temperaturemap)
+        display(plots)
         sleep(0.5)
     end
     @test length(clog.time) == 6
@@ -79,10 +79,10 @@ end
     @test size(clog.data) == (5, N)
 
     l = @layout [a; b]
-    plts = plot(layout=l)
-    @time plotLogger!(plts, 1, clog)
-    @time plotLogger!(plts, 2, clog, colors=:temperaturemap)
-    display(plts)
+    plots = plot(layout=l)
+    @time plotLogger!(plots, 1, clog)
+    @time plotLogger!(plots, 2, clog, colors=:temperaturemap)
+    display(plots)
 end
 
 @testset "ConvergenceLoggers: many points with bands in random order" begin
@@ -100,8 +100,8 @@ end
     @test size(clog.data) == (5, N)
 
     l = @layout [a; b]
-    plts = plot(layout=l)
-    @time plotLogger!(plts, 1, clog)
-    @time plotLogger!(plts, 2, clog, colors=:temperaturemap)
-    display(plts)
+    plots = plot(layout=l)
+    @time plotLogger!(plots, 1, clog)
+    @time plotLogger!(plots, 2, clog, colors=:temperaturemap)
+    display(plots)
 end
